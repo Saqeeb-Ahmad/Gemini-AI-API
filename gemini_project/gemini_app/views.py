@@ -15,8 +15,11 @@ from django.shortcuts import render
 from django.contrib.auth.models import User
 from .forms import CustomUserCreationForm
 
+from django.contrib.auth.decorators import login_required
+# from .models import CustomUser
 
 
+@login_required(login_url='gemini_app:login')
 def gemini_view(request):
     configure_api()
     if request.method == 'POST':
@@ -43,20 +46,99 @@ def gemini_view(request):
 def home_view(request):
     return render(request,'gemini_app/home.html')
 
+
+# def register_view(request):
+#     form = CustomUserCreationForm()
+#     if request.method == 'POST':
+#         form = CustomUserCreationForm(request.POST)
+#         if form.is_valid():
+#             form.save()
+            
+#             messages.success(request, 'Account has been successfully created')
+#             return redirect('gemini_app:login')
+#     return render(request, 'gemini_app/register.html', {'form': form})
+
+
+
+# def register_view(request):
+#     form = CustomUserCreationForm()
+#     if request.method == 'POST':
+#         form = CustomUserCreationForm(request.POST)
+#         password1 = request.POST.get('password1')
+#         password2 = request.POST.get('password2')
+        
+#         if password1 != password2:  # Moved this check outside the form.is_valid() block
+#             # If passwords don't match, show a message
+#             messages.error(request, "Passwords do not match")
+#             return render(request, 'gemini_app/register.html', {'form': form})
+#         if form.is_valid():
+#             # Save the form if passwords match
+#             if len(password1) < 8 and len(password2) < 8:
+#                 messages.error(request, "password is too short")
+#                 return redirect('gemini_app:register')
+#             elif form.save():
+#                 messages.success(request, 'Account has been successfully created')
+
+            
+            
+            
+#             return redirect('gemini_app:login')
+#     return render(request, 'gemini_app/register.html', {'form': form})
+
+
+from django.contrib import messages
+
 def register_view(request):
+    if request.user.is_authenticated:
+        return redirect(reverse('gemini_app:chat-Gemini'))
+
+    form = CustomUserCreationForm()
     if request.method == 'POST':
         form = CustomUserCreationForm(request.POST)
+        
+        password1 = request.POST.get('password1')
+        password2 = request.POST.get('password2')
+        
+        if password1 != password2:
+            messages.error(request, "Passwords do not match")
+            return render(request, 'gemini_app/register.html', {'form': form})
+        
+        if len(password1) < 8 or len(password2) < 8:
+            messages.error(request, "Password is too short")
+            return render(request, 'gemini_app/register.html', {'form': form})
+        
         if form.is_valid():
-            form.save()
-            username = form.cleaned_data.get('username')
-            password = form.cleaned_data.get('password1')
-            user = authenticate(username=username, password=password)
-            login(request, user)
-            return redirect(reverse('gemini_app:login'))
-    else:
-        form = CustomUserCreationForm()
 
-    return render(request, 'gemini_app/register.html', {'form':form} )
-    
+            form.save()
+            messages.success(request, 'Account has been successfully created')
+            return redirect('gemini_app:login')
+    context = {'form': form,}
+    # 'first_name':first_name, 'last_name':last_name
+    return render(request, 'gemini_app/register.html',context)
+
+
 def login_view(request):
-    return redirect(request, 'gemini_app/login.html')
+    if request.user.is_authenticated:
+        return redirect(reverse('gemini_app:chat-Gemini'))
+
+    if request.method == 'POST':
+        username=request.POST.get('username')
+        password=request.POST.get('password')
+        user = authenticate(request, username= username, password = password)
+        if user is not None:
+            login(request, user)
+            first_name = user.first_name
+            last_name = user.last_name
+            return redirect(reverse('gemini_app:chat-Gemini'))
+        else:
+            messages.info(request, 'username or password is invalid')
+    return render(request, 'gemini_app/login.html')
+
+
+def logout_view(request):
+    if request.user.is_authenticated:
+        logout(request)
+        return redirect(reverse('gemini_app:home'))
+        
+    return redirect(reverse('gemini_app:login'))
+          

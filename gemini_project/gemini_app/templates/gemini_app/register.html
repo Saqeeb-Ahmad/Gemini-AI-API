@@ -9,85 +9,64 @@
 
 </head>
 <body>
-    <div class="container">
-        <div class="register-card">
-          <h2 class="register-title">Login</h2>
-          {%for message in messages%}
-                {{message}}
-            {% endfor %}
+  <div class="container">
+    <div class="register-card">
+      <h2 class="register-title">Register</h2>
+      {% for message in messages %}
+        {{ message }}
+      {% endfor %}
 
-          <form method="POST" action="{% url 'gemini_app:login' %}" enctype="multipart/form-data" class="register-form">
-            {% csrf_token %}
-            {{form.as_p}}
-            {% comment %} <div class="form-group">
-                <label class="form-label" name="username">username</label>
-                <div class="form-input-wrapper">
-                  {{form.username}}
-                  <div class="form-input-icon">
-                    <i class="fas fa-lock"></i>
-                  </div>
-                </div>
-              </div>
-
-
-            <div class="form-group">
-              <label class="form-label" name="first_name">First Name</label>
-              <div class="form-input-wrapper">
-                {{form.first_name}}
-                <div class="form-input-icon">
-                  <i class="fas fa-lock"></i>
-                </div>
-              </div>
-            </div>
-
-            <div class="form-group">
-              <label class="form-label" name="last_name">Last Name</label>
-              <div class="form-input-wrapper">
-                {{form.last_name}}
-                <div class="form-input-icon">
-                  <i class="fas fa-lock"></i>
-                </div>
-              </div>
-            </div>
-
-
-            <div class="form-group">
-              <label class="form-label" name="email">Email</label>
-              <div class="form-input-wrapper">
-                {{form.email}}
-                <div class="form-input-icon">
-                  <i class="fas fa-lock"></i>
-                </div>
-              </div>
-            </div>
-
-
-          <div class="form-group">
-          <label class="form-label" name="password1">password</label>
+      <form method="POST" action="{% url 'gemini_app:register' %}" enctype="multipart/form-data" class="register-form">
+        {% csrf_token %}
+        
+        <div class="form-group">
+          <label class="form-label" for="username">Username</label>
           <div class="form-input-wrapper">
-            {{form.password1}}
-            <div class="form-input-icon">
-              <i class="fas fa-lock"></i>
-            </div>
+            {{ form.username }}
           </div>
         </div>
 
         <div class="form-group">
-          <label class="form-label" name="password2">Conform Password</label>
+          <label class="form-label" for="first_name">First Name</label>
           <div class="form-input-wrapper">
-            {{form.password2}}
-            <div class="form-input-icon">
-              <i class="fas fa-lock"></i>
-            </div>
+            {{ form.first_name }}
           </div>
-        </div> {% endcomment %}
-
-            
-            <button type="submit" class="register-btn">Register</button>
-            <span>Don`t have an Account? <a href= "{% url 'gemini_app:register' %}">Sing Up</a></span>
-          </form>
         </div>
-      </div>
+
+        <div class="form-group">
+          <label class="form-label" for="last_name">Last Name</label>
+          <div class="form-input-wrapper">
+            {{ form.last_name }}
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="email">Email</label>
+          <div class="form-input-wrapper">
+            {{ form.email }}
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="password1">Password</label>
+          <div class="form-input-wrapper">
+            {{ form.password1 }}
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="password2">Confirm Password</label>
+          <div class="form-input-wrapper">
+            {{ form.password2 }}
+          </div>
+        </div>
+
+        <button type="submit" class="register-btn">Register</button>
+        <span>Already have an Account? <a href="{% url 'gemini_app:login' %}">Sign In</a></span>
+      </form>
+    </div>
+</div>
+
       
 </body>
 </html>

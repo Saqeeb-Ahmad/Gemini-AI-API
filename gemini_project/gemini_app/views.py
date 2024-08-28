@@ -46,46 +46,6 @@ def gemini_view(request):
 def home_view(request):
     return render(request,'gemini_app/home.html')
 
-
-# def register_view(request):
-#     form = CustomUserCreationForm()
-#     if request.method == 'POST':
-#         form = CustomUserCreationForm(request.POST)
-#         if form.is_valid():
-#             form.save()
-            
-#             messages.success(request, 'Account has been successfully created')
-#             return redirect('gemini_app:login')
-#     return render(request, 'gemini_app/register.html', {'form': form})
-
-
-
-# def register_view(request):
-#     form = CustomUserCreationForm()
-#     if request.method == 'POST':
-#         form = CustomUserCreationForm(request.POST)
-#         password1 = request.POST.get('password1')
-#         password2 = request.POST.get('password2')
-        
-#         if password1 != password2:  # Moved this check outside the form.is_valid() block
-#             # If passwords don't match, show a message
-#             messages.error(request, "Passwords do not match")
-#             return render(request, 'gemini_app/register.html', {'form': form})
-#         if form.is_valid():
-#             # Save the form if passwords match
-#             if len(password1) < 8 and len(password2) < 8:
-#                 messages.error(request, "password is too short")
-#                 return redirect('gemini_app:register')
-#             elif form.save():
-#                 messages.success(request, 'Account has been successfully created')
-
-            
-            
-            
-#             return redirect('gemini_app:login')
-#     return render(request, 'gemini_app/register.html', {'form': form})
-
-
 from django.contrib import messages
 
 def register_view(request):
